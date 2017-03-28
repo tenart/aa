@@ -200,11 +200,11 @@ p {
 }
 
 #welcome {
-    display: none;
+    display: initial;
 }
 
 #game_board {
-    display: initial;
+    display: none;
     font-size: 0;
 }
 
