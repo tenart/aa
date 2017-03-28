@@ -31,6 +31,11 @@ $(function() {
         health: 100
     }
     
+    var cursor = {
+        x: 0,
+        y: 0
+    }
+    
     $(".size").click(function() {
         $(".size").removeClass("active");
         $(this).addClass("active");
@@ -173,6 +178,15 @@ $(function() {
                 turn = snapshot.val();
             })
             
+            database.ref("/" + gameID + "/shot").on('value', function(snapshot) {  
+                target = snapshot.val();
+                if( turn == 1 ) {
+                    animateShell(player1, target);
+                } else {
+                    animateShell(player2, target);
+                }
+            })
+            
             database.ref("/" + gameID + "/player2/equation").on('value', function(snapshot) {  
                 if( myPlayer == 2 ) {
                     mode = "standby";
@@ -214,8 +228,13 @@ $(function() {
                                                         
                             player2.x = dbPlayer2.x;
                             player2.y = dbPlayer2.y; 
+                            
+                            database.ref("/" + gameID + "/shot").update( {
+                                x: cursor.x,
+                                y: cursor.y
+                            });
                                  
-                            if( cursorX == dbPlayer2.x && cursorY == dbPlayer2.y ) {
+                            if( cursor.x == dbPlayer2.x && cursor.y == dbPlayer2.y ) {
                                 setTimeout(function() {
                                     
                                     player2.health = player2.health - 10;
@@ -266,7 +285,12 @@ $(function() {
                             player1.x = dbPlayer1.x;
                             player1.y = dbPlayer1.y;
                             
-                            if( cursorX == dbPlayer1.x && cursorY == dbPlayer1.y ) {
+                            database.ref("/" + gameID + "/shot").update( {
+                                x: cursor.x,
+                                y: cursor.y
+                            });
+                            
+                            if( cursor.x == dbPlayer1.x && cursor.y == dbPlayer1.y ) {
                                 setTimeout(function() {
                                     
                                     player1.health = player1.health - 10;
@@ -315,14 +339,89 @@ $(function() {
         return block*30;
     }
     
-    var cursorX;
-    var cursorY;
-    
     $("#grid td").mouseenter(function() {
-        cursorX = parseInt($(this).index());
-        cursorY = parseInt($(this).parent().index());
+        cursor.x = parseInt($(this).index());
+        cursor.y = parseInt($(this).parent().index());
     })
     
+    var target = {
+        x: 0,
+        y: 0
+    }
+    var shellTest = false;
+    $("#grid td").click(function() {
+        if(shellTest) {
+            animateShell({x:7,y:7}, cursor);
+        }
+    })
+    
+    function animateShell(from, to) {
+        var shell = $("#shell");
+        var shellSprite = $("#shell_sprite");
+        var angleDeg = Math.atan2(to.y - from.y, to.x - from.x) * 180 / Math.PI;
+        splash(to);
+        shell.css("top", blockToPx(from.y))
+            .css("left", blockToPx(from.x))
+            .css("transform", "rotate(" + angleDeg + "deg)");
+        shell.show();
+        shell.animate({
+            top: blockToPx(to.y),
+            left: blockToPx(to.x)
+        }, 1000, "linear", function() {
+            shell.hide();
+            //shell.css("top", blockToPx(from.y))
+            //    .css("left", blockToPx(from.x));
+            shellSprite.css("transform", "translateZ(0px) rotateY(-30deg)");
+        })
+
+        shellSprite.css("transform", "translateZ(100px) rotateY(0deg)").css("transition-timing-function", "ease-out");
+        
+        // Dummy animation just to use the 500 ms delay
+        shellSprite.animate({
+            left: 0,
+        }, 500, "linear",function() {
+            shellSprite.css("transition-timing-function", "ease-in")
+                .css("transform", "translateZ(0px) rotateY(30deg)");
+        })
+    }
+    
+    function splash(position) {
+        splash2(position);
+        var splash = $("#splash");
+        splash.hide().css("left", blockToPx(position.x))
+            .css("top", blockToPx(position.y))
+            .css("transform", "scale(1)")
+            .css("opacity", 1);
+        splash.animate({
+            border: 0,
+        }, 1000, function() {
+            splash.show().css("transform", "scale(2)")
+                .css("opacity", 0);
+        });
+    }
+    
+    function splash2(position) {
+        var splash = $("#splash_vert");
+        var splash2 = $("#splash_vert2")
+        splash.hide().css("left", blockToPx(position.x))
+            .css("top", blockToPx(position.y))
+            .css("transform", "scaleZ(4) rotateX(-90deg)")
+            .css("opacity", 1);
+        
+        splash2.hide().css("left", blockToPx(position.x))
+            .css("top", blockToPx(position.y))
+            .css("transform", "scaleZ(4.5) rotateX(-90deg)  rotateY(90deg)")
+            .css("opacity", 1);
+        
+        splash.animate({
+            border: 0,
+        }, 1000, function() {
+            splash.show().css("transform", "scaleZ(1) rotateX(-90deg)")
+                .css("opacity", 0);
+            splash2.show().css("transform", "scaleZ(1) rotateX(-90deg) rotateY(90deg)")
+                .css("opacity", 0);
+        });
+    }
     
     $("#heading_container button").click(function() {
         $("#heading_container button").removeClass("sel");
@@ -495,8 +594,8 @@ $(function() {
         $("#name1 .health_progress").css("width", player1.health + "%");
         $("#name2 .health_progress").css("width", player2.health + "%");
         
-        $("#debug_cx").text("cursor x: " + cursorX);
-        $("#debug_cy").text("cursor y: " + cursorY);
+        $("#debug_cx").text("cursor x: " + cursor.x);
+        $("#debug_cy").text("cursor y: " + cursor.y);
         
         $("#debug_mode").text("mode: " + mode);
         $("#debug_1x").text("player1 x: " + player1.x);
@@ -520,9 +619,11 @@ $(function() {
         if( myPlayer == 1 ) {
             $("#name1 h2").css("color", "#ffd700");
             $("#name2 h2").css("color", "#fff");
+            $("#boatbox1 .boat_vert_ind").show();
         } else {
             $("#name1 h2").css("color", "#fff");
             $("#name2 h2").css("color", "#ffd700");
+            $("#boatbox2 .boat_vert_ind").show();
         }
         
         if( player1.health < 0) {
@@ -557,8 +658,25 @@ $(function() {
             player2.y = 0;
         }
         
-        $("#boat2").css("background-image", "url(img/ship" + player2.direction.toLowerCase() + "256.png)");
-        $("#boat1").css("background-image", "url(img/ship" + player1.direction.toLowerCase() + "256.png)");
+        if( player2.direction == "N" ) {
+            $("#boatbox2").css("transform", "rotate(-90deg)");
+        } else if( player2.direction == "S" ) {
+            $("#boatbox2").css("transform", "rotate(90deg)");
+        } else if( player2.direction == "E" ) {
+            $("#boatbox2").css("transform", "rotate(0deg)");
+        } else if( player2.direction == "W" ) {
+            $("#boatbox2").css("transform", "rotate(180deg)");
+        }
+        
+        if( player1.direction == "N" ) {
+            $("#boatbox1").css("transform", "rotate(-90deg)");
+        } else if( player1.direction == "S" ) {
+            $("#boatbox1").css("transform", "rotate(90deg)");
+        } else if( player1.direction == "E" ) {
+            $("#boatbox1").css("transform", "rotate(0deg)");
+        } else if( player1.direction == "W" ) {
+            $("#boatbox1").css("transform", "rotate(180deg)");
+        }
         
         $("#boatbox1").css( "top", blockToPx( player1.y ) );
         $("#boatbox1").css( "left", blockToPx( player1.x ) );
@@ -569,3 +687,13 @@ $(function() {
     }
     
 })
+
+
+
+
+
+
+
+
+
+

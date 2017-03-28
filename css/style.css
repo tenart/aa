@@ -26,7 +26,8 @@ body {
     font-family: sans-serif;
     font-weight: lighter;
     color: white;
-    perspective: 2000px;
+    perspective: 1200px;
+    /*33a9ff*/
 }
 
 body * {
@@ -199,11 +200,11 @@ p {
 }
 
 #welcome {
-    display: initial;
+    display: none;
 }
 
 #game_board {
-    display: none;
+    display: initial;
     font-size: 0;
 }
 
@@ -213,7 +214,7 @@ p {
 
 #hud_top {
     margin: 0 auto;
-    background: #224d68;
+    background: linear-gradient(to right, #c93339 50%, #3153c6 50%);
     border-radius: 2px;
     width: 600px;
     padding: 0 20px;
@@ -413,16 +414,18 @@ p {
     top: calc(30px * 1);
     left: calc(30px * 1);
     background-image: url(../img/shipe256.png);
+    opacity: 0;
 }
 
 #boat2 {
     top: calc(30px * 14);
     left: calc(30px * 14);
     background-image: url(../img/shipw256.png);
+    opacity: 0;
 }
 
 .obstacle {
-    opacity: 1;
+    opacity: 0;
     transform: 
         rotate3d(0,0,1,-45deg) 
         rotateX(-55deg)
@@ -517,7 +520,7 @@ p {
 .collision {
     width: 30px;
     height: 30px;
-    box-shadow: inset 0 0 0 2px white;
+    /*box-shadow: inset 0 0 0 2px white;*/
     position: absolute;
     border-radius: 4px;
     pointer-events: none;
@@ -564,17 +567,230 @@ p {
 #boatbox1 {
     top: calc(30px * 1);
     left: calc(30px * 1);
-    transition: top 1s, left 1s;
+    transform: rotate(0deg);
+    transition: top 1s, left 1s, transform 2s;
+    transition-timing-function: ease-in-out;
+    box-shadow: inset 0 0 0 2px white;
 }
 
 #boatbox2 {
     top: calc(30px * 14);
     left: calc(30px * 14);
-    transition: top 1s, left 1s;
+    transform: rotate(180deg);
+    transition: top 1s, left 1s, transform 2s;
+    transition-timing-function: ease-in-out;
+    box-shadow: inset 0 0 0 2px white;
+}
+
+.boat_layer {
+    background: center center / 60px 30px no-repeat;
+    height: 30px;
+    width: 60px;
+    left: -15px;
+    position: absolute;
+    pointer-events: none;
+}
+
+.boat_vert {
+    background: url(../img/boatv128.png) center center / 60px 30px no-repeat;
+    height: 30px;
+    width: 60px;
+    left: -15px;
+    transform: rotateX(-90deg) translateY(-15px);
+    position: absolute;
+    pointer-events: none;
+}
+
+.boat_vert2 {
+    background: url(../img/boatv2128.png) center center / 100% no-repeat;
+    height: 30px;
+    width: 30px;
+    transform: rotateX(-90deg) rotateY(90deg)translateY(-15px);
+    position: absolute;
+    pointer-events: none;
+}
+
+.boat_vert_ind {
+    background: url(../img/diamond128.png) center center / 100% no-repeat;
+    height: 30px;
+    width: 30px;
+    transform: rotateX(-90deg) rotateY(-90deg) translateY(-60px);
+    position: absolute;
+    pointer-events: none;
+    animation: ind_rotate 1s infinite linear;
+    display: none;
+}
+
+@keyframes ind_rotate {
+    0% {
+        transform: rotateX(-90deg) rotateY(-90deg) translateY(-60px);
+    }
+    50% {
+        transform: rotateX(-90deg) rotateY(0deg) translateY(-65px);
+    }
+    100% {
+        transform: rotateX(-90deg) rotateY(90deg) translateY(-60px);
+    }
+}
+
+.boat_1 {
+    background-image: url(../img/boata128.png) ;
+    transform: translateZ(0px)
+}
+
+.boat_2_red {
+    background-image: url(../img/boatbred128.png);
+    transform: translateZ(9px)
+}
+
+.boat_2_blue {
+    background-image: url(../img/boatbblue128.png);
+    transform: translateZ(9px)
+}
+
+.boat_3 {
+    background-image: url(../img/boatc128.png);
+    transform: translateZ(10px)
+}
+
+.boat_4 {
+    background-image: url(../img/boatd128.png);
+    transform: translateZ(11px)
+}
+
+.boat_5 {
+    background-image: url(../img/boate128.png);
+    transform: translateZ(18px)
 }
 
 .colliding {
     background: red;
+}
+
+#shell {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    border-radius: 999px;
+    /*box-shadow: inset 0 0 0 2px #ffd700;*/
+    background: rgba(0, 0, 0, 0.2);
+    display: none;
+    pointer-events: none;
+}
+
+#shell_sprite {
+    background: url(../img/shell128.png) center center / 100% no-repeat;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    display: initial;
+    transform: translateZ(0px) rotateY(-30deg);
+    transition: transform 0.5s;
+    transition-timing-function: ease-out;
+}
+
+#shell_vert {
+    background: url(../img/shell128.png) center center / 100% no-repeat;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    display: initial;
+    transform: rotateX(90deg);
+}
+
+#shell_vert2 {
+    background: url(../img/shellv128.png) center center / 100% no-repeat;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    display: initial;
+    transform: rotateX(90deg) rotateY(90deg) translateZ(-14px);
+}
+
+#shell_vert2b {
+    background: url(../img/shellvgray128.png) center center / 100% no-repeat;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    display: initial;
+    transform: rotateX(90deg) rotateY(90deg) translateZ(-13px);
+}
+
+#shell_vert3 {
+    background: url(../img/shellvgray128.png) center center / 100% no-repeat;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    display: initial;
+    transform: rotateX(90deg) rotateY(90deg) translateZ(-0.1px);
+}
+
+
+#shell_vert4 {
+    background: url(../img/shellvgold128.png) center center / 100% no-repeat;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    display: initial;
+    transform: rotateX(90deg) rotateY(90deg) translateZ(2px);
+}
+
+
+#shell_vert5 {
+    background: url(../img/shellvgray128.png) center center / 100% no-repeat;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    display: initial;
+    transform: rotateX(90deg) rotateY(90deg) translateZ(3px);
+}
+
+#shell_vert6 {
+    background: url(../img/shellvgoldsmall128.png) center center / 100% no-repeat;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    display: initial;
+    transform: rotateX(90deg) rotateY(90deg) translateZ(7px);
+}
+
+#splash {
+    background: white;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    display: initial;
+    border-radius: 999px;
+    transform: scale(1);
+    transition: transform 1s, opacity 1s;
+    pointer-events: none;
+    opacity: 0;
+}
+
+#splash_vert {
+    background: url(../img/splash128.png) center center / 100% no-repeat;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    display: initial;
+    border-radius: 999px;
+    transform: rotateX(-90deg);
+    transition: transform 1s, opacity 1s;
+    pointer-events: none;
+    opacity: 0;
+}
+
+#splash_vert2 {
+    background: url(../img/splash128.png) center center / 100% no-repeat;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    display: initial;
+    border-radius: 999px;
+    transform: rotateX(-90deg) rotateY(-90deg);
+    transition: transform 0.5s, opacity 1s;
+    pointer-events: none;
+    opacity: 0;
 }
 
 #input {
@@ -679,6 +895,7 @@ p {
     top: 100px;
     left: 100px;
     border-radius: 0 2px 2px 0;
+    pointer-events: none;
 }
 
 #enemy_display h1 {
@@ -696,6 +913,7 @@ p {
     border-radius: 5px;
     opacity: 0.1;
     transition: opacity 0.1s;
+    display: none
 }
 
 #debug:hover {
