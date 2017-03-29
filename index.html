@@ -91,6 +91,7 @@
             </div>
             
             <div id="board" class="iso fla">
+                <div id="shadow"></div>
                 <table id="grid">
   <tr>
     <td></td>
@@ -381,6 +382,42 @@
     <td></td>
 </tr>
 </table>
+                <div id="x_rule" class="ruler">
+                    <p>0</p>
+                    <p>1</p>
+                    <p>2</p>
+                    <p>3</p>
+                    <p>4</p>
+                    <p>5</p>
+                    <p>6</p>
+                    <p>7</p>
+                    <p>8</p>
+                    <p>9</p>
+                    <p>10</p>
+                    <p>11</p>
+                    <p>12</p>
+                    <p>13</p>
+                    <p>14</p>
+                    <p>15</p>
+                </div>
+                <div id="y_rule" class="ruler">
+                    <p>15</p>
+                    <p>14</p>
+                    <p>13</p>
+                    <p>12</p>
+                    <p>11</p>
+                    <p>10</p>
+                    <p>9</p>
+                    <p>8</p>
+                    <p>7</p>
+                    <p>6</p>
+                    <p>5</p>
+                    <p>4</p>
+                    <p>3</p>
+                    <p>2</p>
+                    <p>1</p>
+                    <p>0</p>
+                </div>
                 <div id="boat1" class="boat"></div>
                 <div id="boat2" class="boat"></div>
                 <div id="rock1" class="obstacle"></div>
@@ -441,11 +478,27 @@
                 <h1 id="enemydir">-</h1>
             </div>
             
+            <!--
+            <div id="orbit_control">
+                <p id="orbx">X: </p>
+                <p id="orby">Y: </p>
+                <div id="mock_plane">
+                    <h2 id="mockN">N</h2>
+                    <h2 id="mockE">E</h2>
+                    <h2 id="mockW">W</h2>
+                    <h2 id="mockS">S</h2>
+                </div>
+                <input class="slider" type="range" min="0" max="80" id="vertical" value="55">
+                <input class="slider" type="range" min="-90" max="180" id="horizontal" value="45">
+            </div>
+            -->
+            
             <div id="debug" class="gui">
                 <p>DEBUG INFO</p>
                 <p>AriArt</p>
                 <p id="debug_cx">cursor x: </p>
                 <p id="debug_cy">cursor y: </p>
+                <p id="debug_md">mouse down: </p>
                 <p id="debug_1x">player1 x: </p>
                 <p id="debug_1y">player1 y: </p>
                 <p id="debug_1dir">player1 direction: </p>
@@ -488,5 +541,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.10.0/math.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/howler.js/2.0.3/howler.min.js"></script>
     <script src="js/script.js"></script>
 </html>

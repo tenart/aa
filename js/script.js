@@ -33,8 +33,31 @@ $(function() {
     
     var cursor = {
         x: 0,
-        y: 0
+        y: 0,
+        down: false
     }
+    
+    var gunshotSFX = new Howl({
+        src: ["sound/gunshot.mp3"],
+        volume: 0.7
+    })
+    
+    var whistleSFX = new Howl({
+        src: ["sound/whistle.mp3"],
+        volume: 0.6
+    })
+    
+    var splashSFX = new Howl({
+        src: ["sound/splash.mp3"],
+    })
+    
+    $(document).mousedown(function() {
+        cursor.down = true;
+    })
+    
+    $(document).mouseup(function() {
+        cursor.down = false;
+    })
     
     $(".size").click(function() {
         $(".size").removeClass("active");
@@ -252,11 +275,6 @@ $(function() {
                         }
                     })
                 }
-                
-                    
-                
-                    
-                    
             })
 
             database.ref("/" + gameID + "/player1").on('value', function(snapshot) {
@@ -351,7 +369,7 @@ $(function() {
     var shellTest = false;
     $("#grid td").click(function() {
         if(shellTest) {
-            animateShell({x:7,y:7}, cursor);
+            animateShell(player2, cursor);
         }
     })
     
@@ -359,6 +377,8 @@ $(function() {
         var shell = $("#shell");
         var shellSprite = $("#shell_sprite");
         var angleDeg = Math.atan2(to.y - from.y, to.x - from.x) * 180 / Math.PI;
+        gunshotSFX.play();
+        whistleSFX.play();
         splash(to);
         shell.css("top", blockToPx(from.y))
             .css("left", blockToPx(from.x))
@@ -371,7 +391,8 @@ $(function() {
             shell.hide();
             //shell.css("top", blockToPx(from.y))
             //    .css("left", blockToPx(from.x));
-            shellSprite.css("transform", "translateZ(0px) rotateY(-30deg)");
+            shellSprite.css("transform", "translateZ(20px) rotateY(-30deg)");
+            splashSFX.play();
         })
 
         shellSprite.css("transform", "translateZ(100px) rotateY(0deg)").css("transition-timing-function", "ease-out");
@@ -390,12 +411,12 @@ $(function() {
         var splash = $("#splash");
         splash.hide().css("left", blockToPx(position.x))
             .css("top", blockToPx(position.y))
-            .css("transform", "scale(1)")
+            .css("transform", "scale(1) translateZ(2px)")
             .css("opacity", 1);
         splash.animate({
             border: 0,
         }, 1000, function() {
-            splash.show().css("transform", "scale(2)")
+            splash.show().css("transform", "scale(2) translateZ(2px)")
                 .css("opacity", 0);
         });
     }
@@ -556,9 +577,124 @@ $(function() {
         containment: "body"
     });
     
+    var orbit = {
+        x: 0,
+        y: 0,
+        xdir: "",
+        ydir: "",
+        hdeg: 45,
+        vdeg: 55,
+        hspeed: 0,
+        vspeed: 0
+    }
+    
+    $("#board").mousemove(function(e) {
+        
+        var relX = e.pageX;
+        var relY = e.pageY;
+        
+        if( relX > orbit.x ) {
+            orbit.xdir = "-";
+        } else if( relX < orbit.x ){
+            orbit.xdir = "+";
+        } else {
+            orbit.xdir = "";
+        }
+        
+        if( relY > orbit.y ) {
+            orbit.ydir = "-";
+        } else if( relY < orbit.y ){
+            orbit.ydir = "+";
+        } else {
+            orbit.ydir = "";
+        }
+        
+        orbit.hspeed = Math.abs(relX - orbit.x);
+        orbit.vspeed = Math.abs(relY - orbit.y);
+        
+        orbit.x = relX;
+        orbit.y = relY;
+        //$("#orbx").text("X: " + relX);
+        //$("#orby").text("Y: " + relY);
+    })
+    
+    /*
+    $("#board").mouseleave(function(e) {
+        var parentOffset = $("#board").offset(); 
+        var relX = e.pageX - parentOffset.left;
+        var relY = e.pageY - parentOffset.top;
+        orbit.x = relX;
+        orbit.y = relY;
+        orbit.xdir = "";
+        orbit.ydir = "";
+        orbit.hspeed = 0;
+        orbit.vspeed = 0;
+    })
+    */
+    
+    /*
+    $("#orbit_control").mousedown(function(e) {
+        var parentOffset = $("#orbit_control").offset(); 
+        //or $(this).offset(); if you really just want the current element's offset
+        var relX = e.pageX - parentOffset.left;
+        var relY = e.pageY - parentOffset.top;
+        cursor.startx = relX;
+        cursor.starty = relY;
+        $("#orbx").text("X: " + cursor.startx);
+        $("#orby").text("Y: " + cursor.starty);
+    })
+    */
+    
     setInterval(update, 33.33);
     
-    function update() {    
+    function update() {  
+        
+        if( !cursor.down ) {
+            orbit.xdir = "";
+            orbit.ydir = "";
+            orbit.hspeed = 0;
+            orbit.vspeed = 0;
+        }
+        
+        if( cursor.down ) {
+            if( orbit.xdir == "+" ) {
+                orbit.hdeg += orbit.hspeed;
+            } else if( orbit.xdir == "-" ) {
+                orbit.hdeg -= orbit.hspeed;
+            }
+            
+            if( orbit.ydir == "+" ) {
+                orbit.vdeg += orbit.vspeed;
+            } else if( orbit.ydir == "-" ) {
+                orbit.vdeg -= orbit.vspeed;
+            }
+        }
+        
+        if( orbit.vdeg > 80) {
+            orbit.vdeg = 80;
+        } else if( orbit.vdeg < 0 ) {
+            orbit.vdeg = 0;
+        }
+        
+        if( cursor.down ) {
+            $("#board").css("transform", "rotateX(" + orbit.vdeg + "deg) rotateZ(" + orbit.hdeg + "deg)");
+        }
+        
+        //transform: rotateX(55deg) rotateZ(45deg);
+        
+        /*
+        $("#vertical").change(function() {
+            $("#board").css("transform", "rotateX(" + $("#vertical").val() + "deg) rotateZ(" + $("#horizontal").val() + "deg)");
+        })
+        
+        $("#horizontal").change(function() {
+            $("#board").css("transform", "rotateX(" + $("#vertical").val() + "deg) rotateZ(" + $("#horizontal").val() + "deg)");
+        })
+        */
+        
+        //$("#board").css("transform", "rotateX(" + $("#vertical").val() + "deg) rotateZ(" + $("#horizontal").val() + "deg)");
+        
+        $("#heading_container").css("transform", "rotateX(" + orbit.vdeg + "deg) rotateZ(" + orbit.hdeg + "deg)");
         
         $("#boat1").css("top", $("#boatbox1").css("top")).css("left", $("#boatbox1").css("left"));
         $("#boat2").css("top", $("#boatbox2").css("top")).css("left", $("#boatbox2").css("left"));
@@ -566,7 +702,6 @@ $(function() {
         equation = $("#equation").val();
         result = Math.round(math.eval( $("#equation").val() ));
         $("#result").val(result);
-        
         
         if( mode == "standby" || mode == "shoot" ) {
             $("#equation").prop('disabled', true);
@@ -582,7 +717,6 @@ $(function() {
             $("#mode_frame").css("transform", "rotate(-40deg)");
         }
         
-        
         if( turn == 1 ) {
             $("#indicator1").show();
             $("#indicator2").hide();
@@ -596,6 +730,7 @@ $(function() {
         
         $("#debug_cx").text("cursor x: " + cursor.x);
         $("#debug_cy").text("cursor y: " + cursor.y);
+        $("#debug_md").text("mouse down: " + cursor.down);
         
         $("#debug_mode").text("mode: " + mode);
         $("#debug_1x").text("player1 x: " + player1.x);
@@ -619,11 +754,13 @@ $(function() {
         if( myPlayer == 1 ) {
             $("#name1 h2").css("color", "#ffd700");
             $("#name2 h2").css("color", "#fff");
-            $("#boatbox1 .boat_vert_ind").show();
+            $("#ind_2").hide();
+            $("#ind_1").show();
         } else {
             $("#name1 h2").css("color", "#fff");
             $("#name2 h2").css("color", "#ffd700");
-            $("#boatbox2 .boat_vert_ind").show();
+            $("#ind_1").hide();
+            $("#ind_2").show();
         }
         
         if( player1.health < 0) {
