@@ -26,7 +26,7 @@ body {
     font-family: sans-serif;
     font-weight: lighter;
     color: white;
-    perspective: 1200px;
+    perspective: 800px;
     /*33a9ff*/
     overflow: hidden;translateZ(2px)board
 }
@@ -222,13 +222,14 @@ p {
 
 #hud_top {
     margin: 0 auto;
-    background: linear-gradient(to right, #c93339 50%, #3153c6 50%);
+    background: url(../img/hudtop.png) center center / 100%;
     border-radius: 2px;
     width: 600px;
     padding: 0 20px;
     height: 40px;
     z-index: 999;
     position: relative;
+    /*linear-gradient(to right, #c93339 50%, #3153c6 50%)*/
 }
 
 #mode_indicator {
@@ -278,7 +279,7 @@ p {
     display: inline-block;
     width: calc(260px - 20px);
     padding-top: 12px;
-    
+
 }
 
 .turn_ind {
@@ -286,7 +287,7 @@ p {
     height: 40px;
     position: absolute;
     top: 0;
-    animation: slide 1s infinite;
+    animation: slide 1s infinite ease-in-out;
     background: center center / 70% no-repeat;
 }
 
@@ -437,7 +438,7 @@ input[type=range]::-moz-range-track {
     left: calc(50% - 40px);
     top: calc(50% - 40px);
     transform: rotateX(55deg) rotateZ(45deg);
-    border-radius: 2px; 
+    border-radius: 2px;
 }
 
 #mock_plane h2 {
@@ -485,18 +486,18 @@ input[type=range]::-moz-range-track {
     z-index: 1;
     image-rendering: initial;
     transform: rotateX(55deg) rotateZ(45deg);
-    transition: transform 0.2s;
+    /transition: transform 0.2s;
 }
 
 #shadow {
     background: url(../img/shadow128.png) center center / 100% no-repeat;
     position: absolute;
-    width: 200%;
-    height: 200%;
-    top: -50%;
-    left: -50%;
+    width: 400%;
+    height: 400%;
+    top: -150%;
+    left: -150%;
     transform: translateZ(-100px);
-    opacity: 0.3;
+    opacity: 0.2;
     pointer-events: none;
 }
 
@@ -532,139 +533,53 @@ input[type=range]::-moz-range-track {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: rgba(51, 169, 255, 0.66);
+    /background: rgba(51, 169, 255, 0.8);
 }
 
 #grid td {
-    border: 1px dotted rgba(255, 255, 255, 0.07);
+    border: 1px dashed rgba(255, 255, 255, 0.07);
 }
 
-#grid td:hover {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-.boat {
-    background: center center / 100% no-repeat;
-    width: 45px;
-    height: 45px;
+#reticule {
+    background: url(../img/reticule128.png) center center / 100% no-repeat;
+    height: 30px;
+    width: 30px;
     position: absolute;
     pointer-events: none;
+    transition: left 0.1s, top 0.1s;
 }
 
-.boat {
-    transform: 
-        rotate3d(0,0,1,-45deg) 
-        rotateX(-55deg)
-        translateY(-15px)
-        translateZ(5px)
-        ;
-}
-
-#boat1 {
-    top: calc(30px * 1);
-    left: calc(30px * 1);
-    background-image: url(../img/shipe256.png);
-    opacity: 0;
-}
-
-#boat2 {
-    top: calc(30px * 14);
-    left: calc(30px * 14);
-    background-image: url(../img/shipw256.png);
-    opacity: 0;
-}
-
-.obstacle {
-    opacity: 0;
-    transform: 
-        rotate3d(0,0,1,-45deg) 
-        rotateX(-55deg)
-        scale(1)
-        translateZ(10px)
-        translateY(-8px)
-        translateX(1px)
-        ;
+#target_spline {
+    height: 100px;
+    width: 1px;
     position: absolute;
-    pointer-events: none;
-    background: center center / 100% no-repeat;
+    background: linear-gradient(to top, #ffd700, transparent);
+    left: 14.5px;
+    top: -35px;
+    transform: rotateX(90deg) rotateY(45deg) translateY(50px);
 }
 
-#rock1 {
-    width: 30px;
-    height: 30px;
-    top: calc(30px * 5);
-    left: calc(30px * 3);
-    background-image: url(../img/rockc512.png);
-    transform: 
-        rotate3d(0,0,1,-45deg) 
-        rotateX(-55deg)
-        scale(1)
-        translateZ(10px)
-        translateY(-4px)
-        ;
+#target_info {
+    width: 50px;
+    padding: 0 5px;
+    height: 20px;
+    background: #ffd700;
+    border-radius: 3px;
+    position: absolute;
+    top: 5px;
+    left: -15px;
+    font-size: 0;
+    transform: rotateX(90deg) rotateY(45deg) rotateZ(180deg) translateY(-100px);
 }
 
-#rock2 {
-    width: 60px;
-    height: 60px;
-    top: calc(30px * 10);
-    left: calc(30px * 5);
-    background-image: url(../img/rocka512.png);
-}
-
-#rock3 {
-    width: 60px;
-    height: 60px;
-    top: calc(30px * 4);
-    left: calc(30px * 9);
-    background-image: url(../img/rockb512.png);
-}
-
-#rock4 {
-    width: 30px;
-    height: 30px;
-    top: calc(30px * 6);
-    left: calc(30px * 11);
-    background-image: url(../img/rocka512.png);
-    transform: 
-        rotate3d(0,0,1,-45deg) 
-        rotateX(-55deg)
-        scale(1)
-        translateZ(10px)
-        translateY(-5px)
-        translateX(-1px)
-        ;
-}
-
-#island1 {
-    width: 90px;
-    height: 90px;
-    top: calc(30px * 6);
-    left: calc(30px * 2);
-    background-image: url(../img/islanda512.png);
-    transform: 
-        rotate3d(0,0,1,-45deg) 
-        rotateX(-55deg)
-        scale(1)
-        translateZ(10px)
-        translateY(-39px)
-        translateX(-1px)
-        ;
-}
-
-#island2 {
-    width: 90px;
-    height: 90px;
-    top: calc(30px * 2);
-    left: calc(30px * 12);
-    background-image: url(../img/islandb512.png);
-    transform: 
-        rotate3d(0,0,1,-45deg) 
-        rotateX(-55deg)
-        translateZ(10px)
-        translateY(-30px)
-        translateX(13px)
-        ;
+#target_info p {
+    color: #224d68;
+    font-size: 8px;
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+    line-height: 20px;
+    text-transform: capitalize;
 }
 
 .collision {
@@ -674,44 +589,6 @@ input[type=range]::-moz-range-track {
     position: absolute;
     border-radius: 4px;
     pointer-events: none;
-}
-
-#obs1 {
-    top: calc(30px * 5);
-    left: calc(30px * 3);
-}
-
-#obs2 {
-    width: 60px;
-    height: 60px;
-    top: calc(30px * 10);
-    left: calc(30px * 5);
-}
-
-#obs3 {
-    width: 60px;
-    height: 60px;
-    top: calc(30px * 4);
-    left: calc(30px * 9);
-}
-
-#obs4 {
-    top: calc(30px * 6);
-    left: calc(30px * 11);
-}
-
-#obs5 {
-    width: 60px;
-    height: 60px;
-    top: calc(30px * 6);
-    left: calc(30px * 2);
-}
-
-#obs6 {
-    width: 90px;
-    height: 60px;
-    top: calc(30px * 2);
-    left: calc(30px * 12);
 }
 
 #boatbox1 {
@@ -730,6 +607,336 @@ input[type=range]::-moz-range-track {
     transition: top 1s, left 1s, transform 2s;
     transition-timing-function: ease-in-out;
     box-shadow: inset 0 0 0 2px white;
+}
+
+#boatbox1 .hull {
+    background: url(../img/boatsidered128.png) center center / 100% repeat-x;
+}
+
+#boatbox2 .hull {
+    background: url(../img/boatsideblue128.png) center center / 100% repeat-x;
+}
+
+.boat_model {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+}
+
+.hull {
+    height: 10px;
+    width: 21px;
+    position: absolute;
+    left: calc(50% - 10.5px);
+    top: 10px;
+}
+
+.boat_hull_wrap {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    transform: scale3d(1,0.4,1);
+}
+
+.boat_hull {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    transform: rotate(22.5deg);
+}
+
+.side1 {
+    transform: rotateX(-90deg) translateZ(24.1px) translateY(-5px);
+}
+
+.side2 {
+    transform: rotateX(-90deg) rotateY(45deg) translateZ(24.1px) translateY(-5px);
+}
+
+.side3 {
+    transform: rotateX(-90deg) rotateY(90deg) translateZ(24.1px) translateY(-5px);
+}
+
+.side4 {
+    transform: rotateX(-90deg) rotateY(135deg) translateZ(24.1px) translateY(-5px);
+}
+
+.side5 {
+    transform: rotateX(-90deg) rotateY(180deg) translateZ(24.1px) translateY(-5px);
+}
+
+.side6 {
+    transform: rotateX(-90deg) rotateY(225deg) translateZ(24.1px) translateY(-5px);
+}
+
+.side7 {
+    transform: rotateX(-90deg) rotateY(270deg) translateZ(24.1px) translateY(-5px);
+}
+
+.side8 {
+    transform: rotateX(-90deg) rotateY(315deg) translateZ(24.1px) translateY(-5px);
+}
+
+.boat_deck2 {
+    background: url(../img/boatdeck128.png) center center / 100% no-repeat;
+    width: 60px;
+    height: 30px;
+    position: absolute;
+    left: -15px;
+    transform: translateZ(8px);
+}
+
+.boat_vertical {
+    background: url(../img/boat_structure.png) center center / 100% no-repeat;
+    width: 60px;
+    height: 30px;
+    position: absolute;
+    left: -15px;
+    transform: rotateX(-90deg) translateY(-15px);
+}
+
+.boat_decka {
+    background: url(../img/boatdecka128.png) center center / 100% no-repeat;
+    width: 60px;
+    height: 30px;
+    position: absolute;
+    left: -15px;
+    transform: translateZ(12px);
+}
+
+.boat_deckb {
+    background: url(../img/boatdeckb128.png) center center / 100% no-repeat;
+    width: 60px;
+    height: 30px;
+    position: absolute;
+    left: -15px;
+    transform: translateZ(14px);
+}
+
+#boatbox1 .slant {
+    background: url(../img/boatsidered128.png) center center / 100% no-repeat;
+}
+
+#boatbox1 .side {
+    background: url(../img/boatsidered128.png) center center / 100% 100% no-repeat;
+}
+
+#boatbox1 .boat_deck {
+    background: url(../img/boatdeckred128.png) center center / 100% no-repeat;
+}
+
+
+#boatbox2 .slant {
+    background: url(../img/boatsideblue128.png) center center / 100% no-repeat;
+}
+
+#boatbox2 .side {
+    background: url(../img/boatsideblue128.png) center center / 100% 100% no-repeat;
+}
+
+#boatbox2 .boat_deck {
+    background: url(../img/boatdeckblue128.png) center center / 100% no-repeat;
+}
+
+.smokestack {
+    background: url(../img/smokestack128.png) center center / 400% 100% no-repeat;
+}
+
+.boat_sprite {
+    background: url(../img/boatfloor128.png) center center / 100% no-repeat;
+    position: absolute;
+    width: 60px;
+    height: 30px;
+    left: -15px;
+}
+
+.stackN {
+    position: absolute;
+    height: 20px;
+    width: 6px;
+    left: 27px;
+    top: 4.5px;
+    transform: rotateX(-90deg) translateY(-10px) translateZ(3px);
+}
+
+.stackE {
+    position: absolute;
+    height: 20px;
+    width: 6px;
+    left: 27px;
+    top: 4.5px;
+    transform: rotateX(-90deg) rotateY(90deg) translateY(-10px) translateZ(-3px);
+}
+
+.stackW {
+    position: absolute;
+    height: 20px;
+    width: 6px;
+    left: 27px;
+    top: 4.5px;
+    transform: rotateX(-90deg) rotateY(90deg) translateY(-10px) translateZ(3px);
+}
+
+.stackS {
+    position: absolute;
+    height: 20px;
+    width: 6px;
+    left: 27px;
+    top: 4.5px;
+    transform: rotateX(-90deg) translateY(-10px) translateZ(-3px);
+}
+
+.boat_deck {
+    position: absolute;
+    height: 30px;
+    width: 60px;
+    transform: translateZ(7px);
+}
+
+.boat_roof {
+    position: absolute;
+    height: 30px;
+    width: 60px;
+    background: url(../img/boatroof128.png) center center / 100% no-repeat;
+    transform: translateZ(11px);
+}
+
+.boat_bow_left1 {
+    position: absolute;
+    width: 15px;
+    height: 10px;
+    left: 22.5px;
+    top: 10px;
+    transform:
+        rotateX(-90deg)
+        translateY(-5px)
+        rotateY(-30deg)
+        translateX(18.48px)
+        translateZ(-15px);
+}
+
+.boat_bow_right1 {
+    position: absolute;
+    width: 15px;
+    height: 10px;
+    left: 22.5px;
+    top: 10px;
+    transform:
+        rotateX(-90deg)
+        translateY(-5px)
+        rotateY(30deg)
+        translateZ(15px)
+        translateX(18.48px);
+}
+
+.boat_bow_left2 {
+    position: absolute;
+    width: 15px;
+    height: 10px;
+    left: 22.5px;
+    top: 10px;
+    transform:
+        rotateX(-90deg)
+        translateY(-5px)
+        rotateY(-9.6deg)
+        translateX(8.02px)
+        translateZ(-10.23px);
+}
+
+.boat_bow_right2 {
+    position: absolute;
+    width: 15px;
+    height: 10px;
+    left: 22.5px;
+    top: 10px;
+    transform:
+        rotateX(-90deg)
+        translateY(-5px)
+        rotateY(9.6deg)
+        translateX(8.02px)
+        translateZ(10.23px);
+}
+
+.boat_stern_left1 {
+    position: absolute;
+    width: 15px;
+    height: 10px;
+    left: 22.5px;
+    top: 10px;
+    transform:
+        rotateX(-90deg)
+        translateY(-5px)
+        rotateY(30deg)
+        translateX(-18.48px)
+        translateZ(-15px);
+}
+
+.boat_stern_right1 {
+    position: absolute;
+    width: 15px;
+    height: 10px;
+    left: 22.5px;
+    top: 10px;
+    transform:
+        rotateX(-90deg)
+        translateY(-5px)
+        rotateY(-30deg)
+        translateZ(15px)
+        translateX(-18.48px);
+}
+
+.boat_stern_left2 {
+    position: absolute;
+    width: 15px;
+    height: 10px;
+    left: 22.5px;
+    top: 10px;
+    transform:
+        rotateX(-90deg)
+        translateY(-5px)
+        rotateY(9.6deg)
+        translateX(-8.02px)
+        translateZ(-10.23px);
+}
+
+.boat_stern_right2 {
+    position: absolute;
+    width: 15px;
+    height: 10px;
+    left: 22.5px;
+    top: 10px;
+    transform:
+        rotateX(-90deg)
+        translateY(-5px)
+        rotateY(-9.6deg)
+        translateX(-8.02px)
+        translateZ(10.23px);
+}
+
+.boat_side_left {
+    position: absolute;
+    width: 5px;
+    height: 9px;
+    left: 27.5px;
+    top: 10px;
+    transform:
+        rotateX(-90deg)
+        translateY(-4.5px)
+        translateZ(-9.5px)
+        rotateY(180deg);
+}
+
+.boat_side_right {
+    background: gold;
+    position: absolute;
+    width: 5px;
+    height: 9px;
+    left: 27.5px;
+    top: 10px;
+    transform:
+        rotateX(-90deg)
+        translateY(-4.5px)
+        translateZ(10.5px);
 }
 
 .boat_layer {
@@ -771,6 +978,14 @@ input[type=range]::-moz-range-track {
     display: none;
 }
 
+.boat_dir_ind {
+    background: url(../img/dirind128.png) center center / 50% no-repeat;
+    width: 30px;
+    left: 60px;
+    transform: translateZ(0px);
+    //animation: ind_slide 1s infinite ease-in-out;
+}
+
 @keyframes ind_rotate {
     0% {
         transform: rotateX(-90deg) rotateY(-90deg) translateY(-60px);
@@ -780,6 +995,18 @@ input[type=range]::-moz-range-track {
     }
     100% {
         transform: rotateX(-90deg) rotateY(90deg) translateY(-60px);
+    }
+}
+
+@keyframes ind_slide {
+    0% {
+        left: 50px;
+    }
+    50% {
+        left: 60px;
+    }
+    100% {
+        left: 50px;
     }
 }
 
@@ -813,8 +1040,149 @@ input[type=range]::-moz-range-track {
     transform: translateZ(18px)
 }
 
-.colliding {
+#rock1 {
+    transform: scale3d(2,2,2) rotate(10deg);
+    top: calc(30px * 7);
+    left: calc(30px * 7);
+}
+
+#rock2 {
+    transform: scale3d(1,1,1) rotate(-15deg);
+    top: calc(30px * 8);
+    left: calc(30px * 6);
+}
+
+#rock3 {
+    transform: scale3d(2.5,2.5,2.5) rotate(30deg);
+    top: calc(30px * 9);
+    left: calc(30px * 9);
+}
+
+#rock4 {
+    transform: scale3d(2,2,2) rotate(10deg);
+    top: calc(30px * 10);
+    left: calc(30px * 10);
+}
+
+#rock5 {
+    transform: scale3d(1,1,1) rotate(-10deg);
+    top: calc(30px * 11);
+    left: calc(30px * 8);
+}
+
+#rock6 {
+    transform: scale3d(1.2,1.2,1.2) rotate(25deg);
+    top: calc(30px * 5);
+    left: calc(30px * 6);
+}
+
+#rock7 {
+    transform: scale3d(0.6,0.6,0.6) rotate(-10deg);
+    top: calc(30px * 5);
+    left: calc(30px * 8);
+}
+
+#rock8 {
+    transform: scale3d(2,2,2) rotate(-30deg);
+    top: calc(30px * 8);
+    left: calc(30px * 8);
+}
+
+.rock {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.41);
+    position: absolute;
+    width: 30px;
+    height: 30px;
+
+    pointer-events: none;
+    background: #db7c00;
+}
+
+.rockN {
+    background: url(../img/rockface128.png) center center / 100% no-repeat;
+    position: absolute;
+    width: 30px;
+    height: 6px;
+    transform: rotateX(-90deg) translateZ(-3px) translateY(-3px);
+}
+
+.rockE {
+    background: url(../img/rockface128.png) center center / 100% no-repeat;
+    position: absolute;
+    width: 30px;
+    height: 6px;
+    transform: rotateX(-90deg) rotateY(90deg) translateZ(15px) translateY(-3px) translateX(-12px);
+}
+
+.rockW {
+    background: url(../img/rockface128.png) center center / 100% no-repeat;
+    position: absolute;
+    width: 30px;
+    height: 6px;
+    transform: rotateX(-90deg) rotateY(90deg) translateZ(-15px) translateY(-3px) translateX(-12px);
+}
+
+.rockS {
+    background: url(../img/rockface128.png) center center / 100% no-repeat;
+    position: absolute;
+    width: 30px;
+    height: 6px;
+    transform: rotateX(-90deg) translateZ(27px) translateY(-3px);
+}
+
+.slantN {
+    background: url(../img/rockslant128.png) center center / 101% no-repeat;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    transform: rotate(90deg) rotateX(-45deg) translateZ(14.85px) translateY(-8.64px);
+}
+
+.slantE {
+    background: url(../img/rockslant128.png) center center / 101% no-repeat;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    transform: rotate(180deg) rotateX(-45deg) translateZ(14.85px) translateY(-8.64px);
+}
+
+.slantW {
+    background: url(../img/rockslant128.png) center center / 101% no-repeat;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    transform: rotate(0deg) rotateX(-45deg) translateZ(14.85px) translateY(-8.64px);
+}
+
+.slantS {
+    background: url(../img/rockslant128.png) center center / 101% no-repeat;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    transform: rotate(-90deg) rotateX(-45deg) translateZ(14.85px) translateY(-8.64px);
+}
+
+#tracer {
+    height: 150px;
+    width: 0px;
+    position: absolute;
+    transform: rotateX(-90deg) translateY(-75px);
+    margin-left: -235px;
+    margin-top: -60px;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+#tracer_sprite {
     background: red;
+    position: absolute;
+    height: 150px;
+    width: 50px;
+    background: url(../img/tracer.png) top left;
+    background-size: 500px 150px;
+    transition: width 1s linear;
+    pointer-events: none;
+    opacity: 1;
 }
 
 #shell {
@@ -834,7 +1202,7 @@ input[type=range]::-moz-range-track {
     height: 30px;
     position: absolute;
     display: initial;
-    transform: translateZ(25px) rotateY(-30deg);
+    transform: translateZ(10px) rotateY(-30deg) translateX(10px);
     transition: transform 0.5s;
     transition-timing-function: ease-out;
 }
@@ -904,17 +1272,102 @@ input[type=range]::-moz-range-track {
     transform: rotateX(90deg) rotateY(90deg) translateZ(7px);
 }
 
-#splash {
-    background: white;
+#flash {
     width: 30px;
     height: 30px;
     position: absolute;
     display: initial;
-    border-radius: 999px;
-    transform: scale(1) translateZ(2px);
+    pointer-events: none;
+}
+
+#flash_sprite {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    background: url(../img/flash128.png) center center / 100% no-repeat;
+    transform: translateZ(10px) rotateY(-20deg) scale3d(1,1,1) translateX(30px);
+    transition: transform 0.1s;
+}
+
+#flash_vert1 {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    background: url(../img/flash128.png) center center / 100% no-repeat;
+    transform: rotateX(90deg);
+}
+
+#flash_vert2 {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    background: url(../img/flash2128.png) center center / 100% no-repeat;
+    transform: rotateY(90deg) translateZ(-15px);
+}
+
+#flash_vert3 {
+    width: 40px;
+    height: 40px;
+    top: -5px;
+    left: -5px;
+    position: absolute;
+    background: url(../img/flash2128.png) center center / 100% no-repeat;
+    transform: rotateY(90deg) rotateZ(45deg)translateZ(-10px);
+}
+
+#splash {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    display: initial;
+    transform: scale(1);
     transition: transform 1s, opacity 1s;
     pointer-events: none;
     opacity: 0;
+}
+
+#splash2 {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    display: initial;
+    transform: scale(1);
+    transition: transform 2s, opacity 2s;
+    pointer-events: none;
+    opacity: 0;
+}
+
+#splash .splash_sprite {
+    animation: rotateCCW 20s linear infinite;
+}
+
+#splash2 .splash_sprite {
+    animation: rotateCW 20s linear infinite;
+}
+
+.splash_sprite {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: url(../img/foam128.png) center center / 100% no-repeat;
+}
+
+@keyframes rotateCW {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotateCCW {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(-360deg);
+    }
 }
 
 #splash_vert {
@@ -1006,41 +1459,39 @@ input[type=range]::-moz-range-track {
 }
 
 #heading_container button {
-    background: #33a9ff center center / 100% no-repeat;
+    background: ;
     color: white;
     width: 50px;
     height: 50px;
     position: absolute;
     font-family: aqua, sans-serif;
     border-radius: 999px;
-    box-shadow: 0 0 0 1px white;
     line-height: 55px;
 }
 
 #heading_container button.sel {
     background: #ffd700;
     color: #224d68;
+    box-shadow: 0 0 0 1px #f5a729;
 }
 
 #N {
-    top: -10px;
     left: calc(50% - 25px);
 }
 
 #W {
     top: calc(50% - 25px);
-    left: -10px;
     transform: rotate(-90deg);
 }
 
 #E {
     top: calc(50% - 25px);
-    left: calc(100% - 40px);
+    left: calc(100% - 50px);
     transform: rotate(90deg);
 }
 
 #S {
-    top: calc(100% - 40px);
+    top: calc(100% - 50px);
     left: calc(50% - 25px);
     transform: rotate(180deg);
 }
@@ -1081,7 +1532,7 @@ input[type=range]::-moz-range-track {
     font-family: monospace;
     font-size: 10px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.19);
-    
+
 }
 
 #debug p:last-child {
